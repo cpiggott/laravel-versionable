@@ -145,7 +145,7 @@ trait Versionable
             ->first();
     }
 
-    public function getVersion(int $id): ?Version
+    public function getVersion(int|string $id): ?Version
     {
         return $this->versions()->find($id);
     }
@@ -163,12 +163,12 @@ trait Versionable
         return $this->versions()->onlyTrashed()->get();
     }
 
-    public function restoreTrashedVersion(int $id)
+    public function restoreTrashedVersion(int|string $id)
     {
         return $this->versions()->onlyTrashed()->whereId($id)->restore();
     }
 
-    public function revertToVersion(int $id): bool
+    public function revertToVersion(int|string $id): bool
     {
         return $this->versions()->findOrFail($id)->revert();
     }
@@ -191,7 +191,7 @@ trait Versionable
         return $this->versions()->findMany($ids)->each->delete();
     }
 
-    public function removeVersion(int $id)
+    public function removeVersion(int|string $id)
     {
         if ($this->forceDeleteVersion) {
             return $this->forceRemoveVersion($id);
@@ -209,7 +209,7 @@ trait Versionable
         $this->versions->each->delete();
     }
 
-    public function forceRemoveVersion(int $id)
+    public function forceRemoveVersion(int|string $id)
     {
         return $this->versions()->findOrFail($id)->forceDelete();
     }
